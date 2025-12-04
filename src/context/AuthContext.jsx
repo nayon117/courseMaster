@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import axiosPublic from "../api/axiosPublic";
 import { loginUser, registerUser,logoutUser } from "../api/authService";
+import axiosPrivate from "../api/axiosPrivate";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
@@ -41,14 +42,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   // LOGOUT
-  const logout = async () => {
-    await logoutUser(); 
-    setUser(null);
-    setToken(null);
+ const logout = async () => {
+  await logoutUser(); 
+  setUser(null);
+  setToken(null);
 
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-  };
+  localStorage.removeItem("user");
+  localStorage.removeItem("token");
+
+  // Clear axiosPrivate default header
+  delete axiosPrivate.defaults.headers.common["Authorization"];
+};
+
 
   return (
     <AuthContext.Provider value={{ user, token, login, register, logout }}>

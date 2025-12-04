@@ -1,0 +1,58 @@
+import { useState, useEffect } from "react";
+import axiosPrivate from "../../api/axiosPrivate";
+import toast from "react-hot-toast";
+
+const AllStudents = () => {
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      setLoading(true);
+      try {
+        const res = await axiosPrivate.get("/admin/students");
+        setStudents(res.data);
+      } catch (err) {
+        console.error(err);
+        toast.error("Failed to fetch students");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStudents();
+  }, []);
+
+  return (
+    <div className="max-w-7xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">All Students</h1>
+
+      {loading ? (
+        <div className="text-center text-lg">Loading...</div>
+      ) : students.length === 0 ? (
+        <div className="text-center text-lg">No students found.</div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white border rounded shadow">
+            <thead>
+              <tr className="bg-gray-100 text-left">
+                <th className="p-3 border-b">Name</th>
+                <th className="p-3 border-b">Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((student) => (
+                <tr key={student._id} className="hover:bg-gray-50">
+                  <td className="p-3 border-b">{student.name}</td>
+                  <td className="p-3 border-b">{student.email}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default AllStudents;

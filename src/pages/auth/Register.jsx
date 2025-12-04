@@ -31,7 +31,7 @@ const Register = () => {
           className="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 "/>
         <input type="password" placeholder="Password" value={password} onChange={e=>setPassword(e.target.value)}
           className="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 "/>
-        <button type="submit" className="w-full bg-black text-white py-3 rounded-lg transition-colors">
+        <button type="submit" className="w-full bg-black text-white py-3 rounded-lg transition-colors cursor-pointer">
           Register
         </button>
         <p className="mt-4 text-center">
