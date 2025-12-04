@@ -3,6 +3,7 @@ import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/home/Home";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import CourseDetails from "../pages/CourseDetails";
 
 
 export const router = createBrowserRouter([
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
             {
                 path:"/register",
                 Component:Register
+            },
+            {
+                path:"/course/:id",
+                Component: CourseDetails
             }
         ]
     }
