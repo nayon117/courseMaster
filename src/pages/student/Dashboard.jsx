@@ -65,7 +65,7 @@ const Dashboard = () => {
               <p className="text-sm text-gray-600">{course?.instructor || "Unknown Instructor"}</p>
               <div className="w-full bg-gray-200 h-3 rounded mt-2">
                 <div
-                  className="bg-blue-600 h-3 rounded"
+                  className="bg-green-800/90 h-3 rounded"
                   style={{ width: `${progressPercentage}%` }}
                 ></div>
               </div>

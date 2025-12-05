@@ -40,7 +40,7 @@ const ModuleTask = ({ courseId, module }) => {
           />
           <button
             onClick={submitAssignment}
-            className="bg-blue-600 text-white px-3 py-1 mt-2 rounded cursor-pointer"
+            className="bg-green-600 text-white px-3 py-1 mt-2 rounded cursor-pointer"
           >
             Submit Assignment
           </button>
