@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axiosPrivate from "../../api/axiosPrivate";
 import toast from "react-hot-toast";
+import Loader from "../../components/Loader";
 
 const AssignmentReview = () => {
   const [submissions, setSubmissions] = useState([]);
@@ -38,7 +39,7 @@ const AssignmentReview = () => {
       <h1 className="text-3xl font-bold mb-6">Assignment Submissions</h1>
 
       {loading ? (
-        <div className="text-center text-lg">Loading...</div>
+       <Loader />
       ) : submissions.length === 0 ? (
         <div className="text-center text-lg">No assignments submitted yet.</div>
       ) : (

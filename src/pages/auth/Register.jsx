@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
@@ -7,17 +7,21 @@ import toast from 'react-hot-toast';
 const Register = () => {
   const { register: registerUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       await registerUser(data);
       toast.success('Registration successful');
       reset();
       navigate('/');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Registration failed');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,9 +59,14 @@ const Register = () => {
 
         <button 
           type="submit" 
-          className="w-full bg-green-800/90 text-white py-3 rounded-lg transition-colors cursor-pointer"
+          disabled={loading}
+          className="w-full bg-green-800/90 text-white py-3 rounded-lg transition-colors cursor-pointer flex items-center justify-center"
         >
-          Register
+          {loading ? (
+            <div className="h-6 w-6 border-4 border-white/40 border-t-white rounded-full animate-spin"></div>
+          ) : (
+            "Register"
+          )}
         </button>
 
         <p className="mt-4 text-center">

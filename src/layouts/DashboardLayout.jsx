@@ -1,13 +1,14 @@
 import { NavLink, Outlet } from "react-router";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import Loader from "../components/Loader";
 
 const DashboardLayout = () => {
   const [open, setOpen] = useState(false);
   const { user } = useContext(AuthContext);
 
   // Handle case when user is null (after logout)
-  if (!user) return <p className="p-6">Loading...</p>;
+  if (!user) return <Loader />;
 
   // Role-based links
   const links = user?.role === "admin" 

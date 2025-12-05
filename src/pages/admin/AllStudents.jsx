@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axiosPrivate from "../../api/axiosPrivate";
 import toast from "react-hot-toast";
+import Loader from "../../components/Loader";
 
 const AllStudents = () => {
   const [students, setStudents] = useState([]);
@@ -73,7 +74,7 @@ const AllStudents = () => {
       </div>
 
       {loading ? (
-        <div className="text-center text-lg">Loading...</div>
+        <Loader />
       ) : students.length === 0 ? (
         <div className="text-center text-lg">No students found.</div>
       ) : (

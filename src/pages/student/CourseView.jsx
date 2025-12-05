@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import ModuleTask from "./ModuleTask";
 import axiosPrivate from "../../api/axiosPrivate";
+import Loader from "../../components/Loader";
 
 const CourseView = () => {
   const { id } = useParams();
@@ -38,7 +39,7 @@ const CourseView = () => {
     }
   };
 
-  if (!course) return <p className="p-6">Loading course...</p>;
+  if (!course) return <Loader />;
 
   return (
     <div className="max-w-4xl mx-auto p-6">

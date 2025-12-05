@@ -4,6 +4,7 @@ import axiosPublic from "../api/axiosPublic";
 import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import axiosPrivate from "../api/axiosPrivate";
+import Loader from "../components/Loader";
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -27,7 +28,7 @@ const CourseDetails = () => {
     fetchCourse();
   }, [id, user]);
 
-  if (!course) return <div className="p-10">Loading...</div>;
+  if (!course) return <Loader />;
 
   const handleEnroll = async () => {
     if (!user) {

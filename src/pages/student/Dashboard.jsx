@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import axiosPrivate from "../../api/axiosPrivate";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import Loader from "../../components/Loader";
 
 const Dashboard = () => {
   const [courses, setCourses] = useState([]);
@@ -31,7 +32,7 @@ const Dashboard = () => {
     }
   }, [user]);
 
-  if (loading) return <p className="p-6">Loading...</p>;
+  if (loading) return <Loader />;
   if (error) return <p className="p-6 text-red-600">{error}</p>;
   if (!courses?.length) return <p className="p-6">You have no enrolled courses.</p>;
 
