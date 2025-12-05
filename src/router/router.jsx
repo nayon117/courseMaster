@@ -14,6 +14,9 @@ import AssignmentReview from "../pages/admin/AssignmentReview";
 import EditCourse from "../pages/admin/EditCourse";
 import CourseBatches from "../pages/admin/CourseBatches";
 import DashboardLayout from "../layouts/DashboardLayout";
+import Courses from "../pages/courses/Courses";
+import About from "../pages/About";
+import Contact from "../pages/Contact";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +26,18 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
+      },
+      {
+        path: "/courses",
+        Component: Courses,
+      },
+      {
+        path: "/about",
+        Component: About
+      },
+      {
+        path: "/contact",
+        Component: Contact,
       },
       {
         path: "/login",

@@ -60,7 +60,7 @@ const CourseDetails = () => {
         onClick={handleEnroll}
         disabled={enrolled}
         className={`mt-6 px-6 py-3 rounded-lg ${
-          enrolled ? "bg-gray-400 cursor-not-allowed" : "bg-black text-white hover:bg-gray-800"
+          enrolled ? "bg-gray-400 cursor-not-allowed" : "bg-green-700/90 text-white px-4 py-1.5 rounded-full hover:bg-green-800 transition cursor-pointer"
         }`}
       >
         {enrolled ? "Enrolled" : "Enroll Now"}
