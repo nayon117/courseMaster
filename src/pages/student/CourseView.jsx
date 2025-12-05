@@ -56,7 +56,7 @@ const CourseView = () => {
             disabled={lesson.completed}
             onClick={() => markCompleted(lesson._id)}
             className={`mt-2 px-3 py-1 rounded cursor-pointer ${
-              lesson.completed ? "bg-green-600 text-white" : "bg-blue-600 text-white"
+              lesson.completed ? "bg-green-600 text-white" : "bg-black text-white"
             }`}
           >
             {lesson.completed ? "Completed" : "Mark as Completed"}

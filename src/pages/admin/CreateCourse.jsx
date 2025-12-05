@@ -3,7 +3,7 @@ import axiosPrivate from "../../api/axiosPrivate";
 import toast from "react-hot-toast";
 
 const CreateCourse = () => {
-  const { register, control, handleSubmit, setValue} = useForm({
+  const { register, control, handleSubmit, setValue, reset } = useForm({
     defaultValues: {
       title: "",
       description: "",
@@ -54,6 +54,7 @@ const CreateCourse = () => {
     try {
       await axiosPrivate.post("/admin/courses", { ...data, syllabus });
       toast.success("Course created successfully!");
+      reset();
     } catch (err) {
       console.error(err);
       toast.error("Failed to create course");
@@ -114,7 +115,7 @@ const CreateCourse = () => {
             <div key={lesson.id} className="p-4 border rounded space-y-4 bg-gray-50">
               <div className="flex justify-between items-center">
                 <h3 className="font-semibold">Lesson {idx + 1}</h3>
-                <button type="button" onClick={() => removeLesson(idx)} className="text-red-600">
+                <button type="button" onClick={() => removeLesson(idx)} className="text-red-600 cursor-pointer">
                   Remove
                 </button>
               </div>
@@ -218,7 +219,7 @@ const CreateCourse = () => {
                 quizzes: [{ question: "", options: ["", "", "", ""], answer: "" }],
               })
             }
-            className="px-4 py-2 bg-black text-white rounded mt-2"
+            className="px-4 py-2 bg-green-800/90 text-white rounded mt-2 cursor-pointer"
           >
             Add Lesson
           </button>
@@ -226,7 +227,7 @@ const CreateCourse = () => {
 
         <button
           type="submit"
-          className="w-full bg-black text-white py-3 rounded font-bold mt-4"
+          className="w-full bg-green-800/90 text-white py-3 rounded font-bold mt-4 cursor-pointer"
         >
           Create Course
         </button>

@@ -93,7 +93,7 @@ const CourseBatches = () => {
 
       <button
         onClick={handleAdd}
-        className="px-4 py-2 bg-black text-white rounded mb-4"
+        className="px-4 py-2 bg-green-800/90 text-white rounded mb-4"
       >
         Add Batch
       </button>
@@ -136,7 +136,7 @@ const CourseBatches = () => {
             className="border p-2 rounded w-full"
           />
           <div className="flex space-x-2">
-            <button type="submit" className="px-4 py-2 bg-black text-white rounded">
+            <button type="submit" className="px-4 py-2 bg-green-800/90 text-white rounded">
               {editBatch ? "Update Batch" : "Create Batch"}
             </button>
             <button

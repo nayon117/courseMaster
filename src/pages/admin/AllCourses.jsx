@@ -1,20 +1,57 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import axiosPrivate from "../../api/axiosPrivate";
+import { toast } from "react-hot-toast";
 
 const AllCourses = () => {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
 
+  // Custom toast confirmation
+  const confirmToast = (message) => {
+    return new Promise((resolve) => {
+      const id = toast(
+        () => (
+          <div className="flex flex-col gap-2">
+            <span>{message}</span>
+            <div className="flex justify-end gap-2 mt-2">
+              <button
+                className="px-3 py-1 bg-gray-500 text-white rounded cursor-pointer"
+                onClick={() => {
+                  toast.dismiss(id);
+                  resolve(false);
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-3 py-1 bg-red-600 text-white rounded cursor-pointer"
+                onClick={() => {
+                  toast.dismiss(id);
+                  resolve(true);
+                }}
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        ),
+        { duration: Infinity }
+      );
+    });
+  };
+
   const handleDelete = async (courseId) => {
-    if (!window.confirm("Are you sure you want to delete this course?")) return;
+    const confirmed = await confirmToast("Are you sure you want to delete this course?");
+    if (!confirmed) return;
+
     try {
       await axiosPrivate.delete(`/admin/courses/${courseId}`);
       setCourses(courses.filter((c) => c._id !== courseId));
-      alert("Course deleted successfully");
+      toast.success("Course deleted successfully");
     } catch (err) {
       console.error(err);
-      alert("Failed to delete course");
+      toast.error("Failed to delete course");
     }
   };
 
@@ -33,7 +70,7 @@ const AllCourses = () => {
         setCourses(res.data.courses || []);
       } catch (err) {
         console.error(err);
-        alert("Failed to fetch courses");
+        toast.error("Failed to fetch courses");
       }
     };
 
@@ -56,15 +93,9 @@ const AllCourses = () => {
               {/* Course Info */}
               <div className="mb-3 md:mb-0">
                 <h2 className="font-semibold text-lg">{course.title}</h2>
-                <p className="text-sm text-gray-600">
-                  Instructor: {course.instructor}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Category: {course.category}
-                </p>
-                <p className="text-sm font-medium">
-                  Price: ${course.price || 0}
-                </p>
+                <p className="text-sm text-gray-600">Instructor: {course.instructor}</p>
+                <p className="text-sm text-gray-600">Category: {course.category}</p>
+                <p className="text-sm font-medium">Price: ${course.price || 0}</p>
               </div>
 
               {/* Actions */}
@@ -83,7 +114,7 @@ const AllCourses = () => {
                 </button>
                 <button
                   onClick={() => openBatchViewer(course._id)}
-                  className="px-3 py-1 bg-blue-600 text-white rounded whitespace-nowrap cursor-pointer"
+                  className="px-3 py-1 bg-green-800/90 text-white rounded whitespace-nowrap cursor-pointer"
                 >
                   Batches
                 </button>

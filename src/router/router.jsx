@@ -40,14 +40,6 @@ export const router = createBrowserRouter([
         Component: Contact,
       },
       {
-        path: "/login",
-        Component: Login,
-      },
-      {
-        path: "/register",
-        Component: Register,
-      },
-      {
         path: "/course/:id",
         Component: CourseDetails,
       },
@@ -89,4 +81,12 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path:'/login',
+    Component: Login,
+  },
+  {
+    path:'/register',
+    Component: Register,
+  }
 ]);

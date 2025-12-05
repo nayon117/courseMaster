@@ -70,7 +70,7 @@ const EditCourse = () => {
 
       await axiosPrivate.put(`/admin/courses/${courseId}`, { ...data, syllabus, tags: tagsArray });
       toast.success("Course updated successfully!");
-      navigate("/admin/all-courses");
+      navigate("/dashboard/admin/all-courses");
     } catch (err) {
       console.error(err);
       toast.error("Failed to update course");
@@ -97,7 +97,7 @@ const EditCourse = () => {
           <div key={lesson.id} className="p-4 border rounded space-y-4 bg-gray-50">
             <div className="flex justify-between items-center">
               <h3 className="font-semibold">Lesson {idx + 1}</h3>
-              <button type="button" onClick={() => removeLesson(idx)} className="text-red-600">Remove</button>
+              <button type="button" onClick={() => removeLesson(idx)} className="text-red-600 cursor-pointer">Remove</button>
             </div>
 
             <input {...register(`syllabus.${idx}.title`)} placeholder="Lesson Title" className="border p-2 rounded w-full" />
@@ -167,12 +167,12 @@ const EditCourse = () => {
               quizzes: [{ question: "", options: ["", "", "", ""], answer: "" }],
             })
           }
-          className="px-4 py-2 bg-black text-white rounded mt-2"
+          className="px-4 py-2 bg-green-800/90 text-white rounded mt-2 cursor-pointer"
         >
           Add Lesson
         </button>
 
-        <button type="submit" className="w-full bg-black text-white py-3 rounded font-bold mt-4 cursor-pointer ">
+        <button type="submit" className="w-full bg-green-800/90 text-white py-3 rounded font-bold mt-4 cursor-pointer ">
           Update Course
         </button>
       </form>

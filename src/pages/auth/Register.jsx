@@ -1,20 +1,20 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { Link, useNavigate } from 'react-router';
+import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 const Register = () => {
-  const { register } = useContext(AuthContext);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { register: registerUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+
+  const onSubmit = async (data) => {
     try {
-      await register({name, email, password});
+      await registerUser(data);
       toast.success('Registration successful');
+      reset();
       navigate('/');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Registration failed');
@@ -23,20 +23,46 @@ const Register = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-white">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-xl w-full max-w-md">
+      <form 
+        onSubmit={handleSubmit(onSubmit)} 
+        className="bg-white p-8 rounded-xl shadow-xl w-full max-w-md"
+      >
         <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
-        <input type="text" placeholder="Name" value={name} onChange={e=>setName(e.target.value)}
-          className="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 "/>
-        <input type="email" placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)}
-          className="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 "/>
-        <input type="password" placeholder="Password" value={password} onChange={e=>setPassword(e.target.value)}
-          className="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 "/>
-        <button type="submit" className="w-full bg-black text-white py-3 rounded-lg transition-colors cursor-pointer">
+
+        {/* Name */}
+        <input 
+          type="text" 
+          placeholder="Name" 
+          {...register('name', { required: true })}
+          className={`w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.name ? 'border-red-500' : ''}`}
+        />
+
+        {/* Email */}
+        <input 
+          type="email" 
+          placeholder="Email" 
+          {...register('email', { required: true })}
+          className={`w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.email ? 'border-red-500' : ''}`}
+        />
+
+        {/* Password */}
+        <input 
+          type="password" 
+          placeholder="Password" 
+          {...register('password', { required: true })}
+          className={`w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.password ? 'border-red-500' : ''}`}
+        />
+
+        <button 
+          type="submit" 
+          className="w-full bg-green-800/90 text-white py-3 rounded-lg transition-colors cursor-pointer"
+        >
           Register
         </button>
+
         <p className="mt-4 text-center">
-        Already have an account? <Link to="/login" className="text-black hover:underline">Login</Link>
-      </p>
+          Already have an account? <Link to="/login" className="text-black hover:underline">Login</Link>
+        </p>
       </form>
     </div>
   );
