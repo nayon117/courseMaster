@@ -82,7 +82,7 @@ const Courses = () => {
             key={i}
             onClick={() => setParams(p => ({ ...p, page: i + 1 }))}
             className={`px-3 py-1 border rounded ${
-              params.page === i + 1 && "bg-black text-white"
+              params.page === i + 1 ? "bg-black text-white cursor-pointer" : "cursor-pointer"
             }`}
           >
             {i + 1}
