@@ -1,16 +1,43 @@
-# React + Vite
+# Course Master - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Project Name:** Course Master  
+**Live Link:** [https://course-master-nine.vercel.app/](https://course-master-nine.vercel.app/)  
 
-Currently, two official plugins are available:
+## Description
+Course Master is an admin/student management frontend built with React.  
+It allows admins to view all students, filter students by course, and review submitted assignments.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installation / Run Instructions
 
-## React Compiler
+1. Clone the repository:
+```bash
+git clone <https://github.com/nayon117/courseMaster>
+cd frontend
+npm install
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# API Documentation
+Students
 
-## Expanding the ESLint configuration
+## Get all students
+GET /admin/students
+Returns a list of all students.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Get students by course
+GET /admin/courses/:courseId/students
+Returns a list of students enrolled in the selected course.
+
+Courses
+
+## Get all courses
+GET /admin/courses
+Returns a list of all available courses.
+
+Assignments
+
+## Get all assignments
+GET /admin/assignments
+Returns all submitted assignments with student and course info.
+
+## For any issue email: hasibul.nayon1@gmail.com

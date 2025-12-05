@@ -1,71 +1,134 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axiosPrivate from "../../api/axiosPrivate";
+import toast from "react-hot-toast";
 
 const ModuleTask = ({ courseId, module }) => {
-  const [assignment, setAssignment] = useState("");
-  const [quizAnswer, setQuizAnswer] = useState("");
+  const [assignmentInput, setAssignmentInput] = useState("");
+  const [alreadySubmitted, setAlreadySubmitted] = useState(false);
+  const [quizAnswers, setQuizAnswers] = useState({});
   const [score, setScore] = useState(null);
 
+  // ---------------------------
+  // CHECK IF STUDENT SUBMITTED
+  // ---------------------------
+  useEffect(() => {
+    if (module?.studentAssignmentSubmission) {
+      setAlreadySubmitted(true);
+      setAssignmentInput(module.studentAssignmentSubmission.answer || "");
+    }
+  }, [module]);
+
+  // ----------------------------
+  // SUBMIT ASSIGNMENT
+  // ----------------------------
   const submitAssignment = async () => {
     try {
-      await axiosPrivate.post(`/student/courses/${courseId}/lesson/${module._id}/assignment`, { answer: assignment });
-      alert("Assignment submitted!");
-      setAssignment("");
+      await axiosPrivate.post(
+        `/student/courses/${courseId}/lesson/${module?._id}/assignment`,
+        { answer: assignmentInput }
+      );
+
+      toast.success("Assignment submitted!");
+      setAlreadySubmitted(true);
     } catch (err) {
       console.error(err);
-      alert("Failed to submit assignment");
+      toast.error("Failed to submit assignment");
     }
   };
 
-  const submitQuiz = async () => {
-    try {
-      const { data } = await axiosPrivate.post(`/student/courses/${courseId}/lesson/${module._id}/quiz`, { score: quizAnswer });
-      setScore(data.progress?.find(p => p.lessonId === module._id)?.quizScore || 0);
-    } catch (err) {
-      console.error(err);
-      alert("Failed to submit quiz");
-    }
+  // ----------------------------
+  // QUIZ EVALUATION
+  // ----------------------------
+  const evaluateQuiz = () => {
+    if (!module?.quizzes || module.quizzes.length === 0) return;
+
+    let correct = 0;
+
+    module.quizzes.forEach((q, index) => {
+      if (quizAnswers[index] === q.answer) correct++;
+    });
+
+    const calculatedScore = Math.round((correct / module.quizzes.length) * 100);
+    setScore(calculatedScore);
   };
 
   return (
     <div className="p-4 border rounded mt-4">
-      {module.assignment && (
-        <div>
+
+      {/* ASSIGNMENT SECTION */}
+      {module?.assignments?.length > 0 && (
+        <div className="mb-6">
+          <h3 className="font-semibold mb-2">Assignment</h3>
+
+          {module.assignments.map((a, idx) => (
+            <p key={idx} className="text-blue-600 underline">
+              {a.type === "link" ? (
+                <a href={a.answer} target="_blank">{a.answer}</a>
+              ) : (
+                a.answer
+              )}
+            </p>
+          ))}
+
           <input
             type="text"
-            placeholder="Submit assignment link or text"
-            value={assignment}
-            onChange={e => setAssignment(e.target.value)}
-            className="border px-2 py-1 w-full rounded"
+            placeholder="Submit your assignment link or text"
+            value={assignmentInput}
+            onChange={(e) => setAssignmentInput(e.target.value)}
+            className="border px-2 py-1 w-full rounded mt-2"
+            disabled={alreadySubmitted}
           />
+
           <button
             onClick={submitAssignment}
-            className="bg-green-600 text-white px-3 py-1 mt-2 rounded cursor-pointer"
+            disabled={alreadySubmitted}
+            className={`px-3 py-1 mt-2 rounded cursor-pointer text-white 
+                ${alreadySubmitted ? "bg-gray-400 cursor-not-allowed" : "bg-green-600"}`}
           >
-            Submit Assignment
+            {alreadySubmitted ? "Already Submitted" : "Submit Assignment"}
           </button>
         </div>
       )}
 
-      {module.quiz && (
-        <div className="mt-4">
-          <select
-            value={quizAnswer}
-            onChange={e => setQuizAnswer(e.target.value)}
-            className="border px-2 py-1 w-full rounded"
-          >
-            <option value="">Select Answer</option>
-            {module.quiz.map((q, i) => (
-              <option key={i} value={q.value}>{q.label}</option>
-            ))}
-          </select>
+      {/* QUIZ SECTION */}
+      {module?.quizzes?.length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-3">Quiz</h3>
+
+          {module.quizzes.map((q, qi) => (
+            <div key={qi} className="mb-4">
+              <p className="font-medium mb-1">{q.question}</p>
+
+              <select
+                value={quizAnswers[qi] || ""}
+                onChange={(e) =>
+                  setQuizAnswers((prev) => ({
+                    ...prev,
+                    [qi]: e.target.value,
+                  }))
+                }
+                className="border px-2 py-1 w-full rounded"
+              >
+                <option value="">Select Answer</option>
+                {q.options.map((opt, oi) => (
+                  <option key={oi} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
+
           <button
-            onClick={submitQuiz}
-            className="bg-green-600 text-white px-3 py-1 mt-2 rounded cursor-pointer"
+            onClick={evaluateQuiz}
+            className="bg-green-600 text-white px-3 py-1 rounded cursor-pointer"
           >
             Submit Quiz
           </button>
-          {score !== null && <p className="mt-2 font-semibold">Score: {score}%</p>}
+
+          {score !== null && (
+            <p className="mt-3 text-lg font-semibold">Score: {score}%</p>
+          )}
         </div>
       )}
     </div>

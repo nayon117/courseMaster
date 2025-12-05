@@ -63,7 +63,7 @@ const CourseView = () => {
           </button>
 
           {/* Assignment & Quiz for this lesson */}
-          {(lesson.assignment !== undefined || lesson.quizScore !== undefined) && (
+          {(lesson.assignments?.length > 0 || lesson.quizzes?.length > 0) && (
             <ModuleTask courseId={id} module={lesson} />
           )}
         </div>

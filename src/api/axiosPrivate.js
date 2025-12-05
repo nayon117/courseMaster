@@ -2,6 +2,7 @@ import axios from "axios";
 
 const axiosPrivate = axios.create({
   baseURL: "http://localhost:5000/api",
+//   baseURL: "https://course-master-backend-one.vercel.app/api",
   withCredentials: true, 
 });
 
